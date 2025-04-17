@@ -9,6 +9,7 @@ def menu():
         print("3. Cambiar paciente de cama")
         print("4. Cambiar paciente de médico")
         print("5. Crear habitaciones y camas")
+        print("6. Crear camas en una habitación")
         print("0. Salir")
 
         opcion = input("Seleccione una opción: ")
@@ -23,6 +24,8 @@ def menu():
             medicos.cambiar_medico()
         elif opcion == "5":
             camas.crear_habitacion_y_camas()
+        elif opcion == "6":
+            camas.crear_camas_en_habitación()
         elif opcion == "0":
             break
         else:

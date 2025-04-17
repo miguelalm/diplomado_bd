@@ -93,3 +93,10 @@ def crear_cama(numero, habitacion_id):
         with conn.cursor() as cur:
             cur.execute(query, (numero, habitacion_id))
             conn.commit()
+
+def obtener_numero_camas(habitacion_id):
+    query = "SELECT max(numero) FROM cama WHERE habitacion_id = %s;"
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(query, (habitacion_id, ))
+            return cur.fetchone()[0]
