@@ -5,7 +5,7 @@ def get_connection():
     return psycopg2.connect(
         dbname="postgres",
         user="postgres",
-        password="",
+        password="dell040502",
         host="localhost",
         port="15432",
         options="-c search_path=dbo,diplomado"
@@ -14,14 +14,14 @@ def get_connection():
 def traer_pacientes():
     query = """
     SELECT 
-        p.rut, p.nombre, enf.nombre AS enfermedad, m.nombre AS medico, h.numero AS habitacion
+        p.rut, p.nombre, en.nombre AS enfermedad, m.nombre AS medico, h.numero AS habitacion, c.numero as cama
     FROM paciente p
     JOIN estancia_paciente ep ON p.id = ep.paciente_id
     JOIN medico m ON ep.medico_id = m.id
     JOIN cama c ON ep.cama_id = c.id
     JOIN habitacion h ON c.habitacion_id = h.id
     LEFT JOIN diagnostico d ON p.id = d.paciente_id
-    LEFT JOIN enfermedad enf ON d.enfermedad_id = enf.id
+    LEFT JOIN enfermedad en ON d.enfermedad_id = en.id
     WHERE ep.fecha_egreso IS NULL;
     """
     with get_connection() as conn:
@@ -33,7 +33,7 @@ def traer_detalle_paciente_por_rut(rut):
     query = """
     SELECT 
         p.rut, p.nombre,
-        enf.nombre AS diagnostico,
+        en.nombre AS diagnostico,
         m.nombre AS medico,
         e.nombre AS ultimo_examen,
         h.numero AS habitacion,
@@ -44,7 +44,7 @@ def traer_detalle_paciente_por_rut(rut):
     LEFT JOIN cama c ON ep.cama_id = c.id
     LEFT JOIN habitacion h ON c.habitacion_id = h.id
     LEFT JOIN diagnostico d ON d.paciente_id = p.id
-    LEFT JOIN enfermedad enf ON d.enfermedad_id = enf.id
+    LEFT JOIN enfermedad en ON d.enfermedad_id = en.id
     LEFT JOIN orden_examen oe ON oe.paciente_id = p.id
     LEFT JOIN examen e ON oe.examen_id = e.id
     WHERE p.rut = %s
