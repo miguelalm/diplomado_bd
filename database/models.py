@@ -1,15 +1,5 @@
-
 import psycopg2
-
-def get_connection():
-    return psycopg2.connect(
-        dbname="postgres",
-        user="postgres",
-        password="dell040502",
-        host="localhost",
-        port="15432",
-        options="-c search_path=dbo,diplomado"
-    )
+from database.connection import get_connection
 
 def traer_pacientes():
     query = """
